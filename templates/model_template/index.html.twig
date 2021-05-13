@@ -22,9 +22,6 @@
                 <a href="{{ path('model_template_index_block', {'block':'entrada'}) }}" class="btn btn-sm btn-outline-alameda btn-round">
                     <span class="fab fa-pagelines"></span> Modelos para entradas
                 </a>
-                <div class="text-center align-items-center">
-                    {{ knp_pagination_render(model_templates) }}
-                </div>
                 <div class="table-responsive">
                     <table class="table">
                         <thead class=" text-primary">
@@ -33,7 +30,7 @@
                             <th>Nombre <br/> <small><i>Identificador</i></small></th>
                             <th>Es para</th>
                             <th>Descripción</th>
-                            <th>Imagen</th>
+
                             <th><i class="fa fa-cogs"> </i></th>
                         </tr>
                         </thead>
@@ -46,16 +43,7 @@
                                 </td>
                                 <td>{{ model_template.block }}</td>
                                 <td>{{ model_template.description }}</td>
-                                <td>
-                                    {% if (model_template.imageFilename != null) %}
-                                        <img class="article-img" alt="{{ base.lema }}"
-                                             src="{{ model_template.imagePath|imagine_filter('squared_thumbnail_section') }}">
-                                        <br/>
-                                        {{ model_template.imageFilename }}
-                                    {% else %}
-                                        No tiene imagen
-                                    {% endif %}
-                                </td>
+
                                 <td>
                                     <a href="{{ path('model_template_show', {'id': model_template.id}) }}">
                                         {{ include('bases/_ver.html.twig', {'button_label':'Ver modelo'}) }}
@@ -68,14 +56,11 @@
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="5">No se encontraron model templates</td>
+                                <td colspan="5">no records found</td>
                             </tr>
                         {% endfor %}
                         </tbody>
                     </table>
-                </div>
-                <div class="text-center align-items-center">
-                    {{ knp_pagination_render(model_templates) }}
                 </div>
                 <a href="{{ path('register_template') }}" class="btn btn-sm btn-primary btn-round">
                     <span class="fa fa-plus-circle"></span> Registrar Templates

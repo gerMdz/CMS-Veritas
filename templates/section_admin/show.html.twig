@@ -20,7 +20,7 @@
                         </tr>
                         <tr>
                             <th>Título <small>(identificador)</small></th>
-                            <td>{{ section.title | replace({'<p>':'', '</p>':'<br/>'}) | raw }} <small>({{ section.identificador }})</small>
+                            <td>{{ section.title }} <small>({{ section.identificador }})</small>
                             </td>
                         </tr>
                         <tr>
@@ -36,7 +36,7 @@
                         </tr>
                         <tr>
                             <th>Contenido</th>
-                            <td>{{ section.contenido | replace({'<p>':'', '</p>':'<br/>'}) | raw }}</td>
+                            <td>{{ section.contenido }}</td>
                         </tr>
                         <tr>
                             <th>LinkRoute</th>
@@ -46,21 +46,13 @@
                             <th>ImageFilename</th>
                             <td>{{ section.imageFilename }}</td>
                         </tr>
-                        <tr>
-                            <th>Creada</th>
-                            <td>{{ section.createdAt ? section.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Actualizada</th>
-                            <td>{{ section.updatedAt ? section.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Disponible desde</th>
-                            <td>{{ section.disponibleAt ? section.disponibleAt|date('Y-m-d H:i:s') : '' }}</td>
-                        </tr>
 
                         <tr>
-                            <th>Disponible hasta</th>
+                            <th>CreatedAt</th>
+                            <td>{{ section.disponibleAt ? section.disponibleAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>UpdatedAt</th>
                             <td>{{ section.disponibleHastaAt ? section.disponibleHastaAt|date('Y-m-d H:i:s') : '' }}</td>
                         </tr>
                         <tr>
@@ -69,11 +61,10 @@
                                 {% if section.principales %}
                                     {% for principal in section.principales %}
                                 <a href="{{ path('principal_show', {'id': principal.id}) }}">
-                                    {{ principal.titulo | replace({'<p>':'', '</p>':'<br/>'}) | raw }}
+                                        {{ principal.titulo }}
                                 </a>
                                     {% endfor %}
                                 {% endif %}
-                                <small>(Orden {{ section.orden }} )</small>
                             </td>
                         </tr>
                         </tbody>
@@ -81,7 +72,7 @@
 
                 </div>
 
-                <a href="{{ path('admin_section_list') }}" class="btn btn-info">Volver al listado de secciones</a>
+                <a href="{{ path('admin') }}" class="btn btn-info">Volver al listado Principal</a>
 
                 <a href="{{ path('admin_section_edit', {'id': section.id}) }}" class="btn btn-warning">Editar</a>
 

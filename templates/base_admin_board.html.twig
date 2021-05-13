@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
 
     <!-- Required meta tags -->
@@ -11,10 +12,10 @@
     <link rel="shortcut icon" href="{{ asset('/images/institucional/indice.png') }}" type="image/x-icon">
     <!--     Fonts and icons     -->
     {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('fonts/awesome/web-fonts-with-css/css/all.min.css') }}">
-        <!-- Material Kit CSS -->
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="{{ asset('material-dashboard/assets/css/material-dashboard.css') }}?v=2.1.2" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ asset('fonts/awasome/web-fonts-with-css/css/all.min.css') }}">
+    <!-- Material Kit CSS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{{ asset('material-dashboard/assets/css/material-dashboard.css') }}?v=2.1.2" rel="stylesheet"/>
         <style>
             .main-panel {
                 /*position: relative;*/
@@ -22,7 +23,6 @@
                 width: calc(100% - 0px) !important;
                 /*transition: 0.33s, cubic-bezier(0.685, 0.0473, 0.346, 1);*/
             }
-
             .main-panel > .content {
                 margin-top: 0px !important;
             }
@@ -36,9 +36,9 @@
 <body>
 
 <div class="wrapper ">
-    <div class="collapse" data-color="purple" data-background-color="white"
+    <div class="collapse"  data-color="purple" data-background-color="white"
          id="collapseSidebar"
-            {# data-image="{{ asset('images/imagen-auditorio.jpg') }}" #}
+{#         data-image="{{ asset('images/imagen-auditorio.jpg') }}"#}
     >
         <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
@@ -61,9 +61,7 @@
     <div class="main-panel">
         <div class="content">
             <div class="container-fluid">
-                <button id="buttonmenu" accesskey="m" class="btn btn-primary btn-sm" type="button"
-                        data-toggle="collapse" data-target="#collapseSidebar" aria-expanded="false"
-                        aria-controls="collapseSidebar">
+                <button id="buttonmenu" accesskey="m" class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#collapseSidebar" aria-expanded="false" aria-controls="collapseSidebar">
                     Ver menú
                 </button>
                 {% for message in app.flashes('success') %}
@@ -77,10 +75,10 @@
                 {% block encabezado %}
                     <!-- your encabezado here -->
                 {% endblock %}
-                <div class="bg-light p-1">
-                    {% block content %}
-                        <!-- your content here -->
-                    {% endblock %}
+                <div class="bg-white p-1">
+                {% block content %}
+                    <!-- your content here -->
+                {% endblock %}
                 </div>
 
             </div>
@@ -88,25 +86,23 @@
         <footer class="footer">
             <div class="container-fluid">
                 {% block footer %}
-                    <div class="row">
-                        <div class="float-left col-sm-6">
-                            <ul>
-                                <li>
-                                    <a href="{{ path('index') }}">
-                                        {{ base.siteName }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="copyright float-right col-sm-6">
-                            &copy;
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script>
-                            <a href="{{ path('index') }}" target="_blank">{{ base.siteName }}a</a>
-                        </div>
-                        <!-- your footer here -->
+                    <nav class="float-left">
+                        <ul>
+                            <li>
+                                <a href="{{ path('index') }}">
+                                    {{ base.siteName }}
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="copyright float-right">
+                        &copy;
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script>
+                        <a href="{{ path('index') }}" target="_blank">{{ base.siteName }}a</a>
                     </div>
+                    <!-- your footer here -->
                 {% endblock %}
             </div>
         </footer>
@@ -124,7 +120,7 @@
     <script src="{{ asset('material-dashboard/assets/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script>
 
     <!-- Plugin for the momentJs  -->
-    {# <script src="{{ asset('material-dashboard/assets/js/plugins/moment.min.js') }}"></script> #}
+{#    <script src="{{ asset('material-dashboard/assets/js/plugins/moment.min.js') }}"></script>#}
     <script src="{{ asset('material-dashboard/assets/js/plugins/moment-with-locales.min.js') }}"></script>
 
     <!--  Plugin for Sweet Alert -->

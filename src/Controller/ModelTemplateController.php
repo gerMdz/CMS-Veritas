@@ -3,18 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\ModelTemplate;
+use App\Entity\TypeBlock;
 use App\Form\ModelTemplateType;
-use App\Form\Step\Section\StepOneType;
 use App\Repository\ModelTemplateRepository;
 use App\Repository\TypeBlockRepository;
-use App\Service\UploaderHelper;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,20 +24,12 @@ class ModelTemplateController extends AbstractController
     /**
      * @Route("/", name="model_template_index", methods={"GET"})
      * @param ModelTemplateRepository $modelTemplateRepository
-     * @param PaginatorInterface $paginator
-     * @param Request $request
      * @return Response
      */
-    public function index(ModelTemplateRepository $modelTemplateRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(ModelTemplateRepository $modelTemplateRepository): Response
     {
-        $modelTemplate = $modelTemplateRepository->findAllModelTemplates();
-        $modelTemplates = $paginator->paginate(
-            $modelTemplate, /* query NOT result */
-            $request->query->getInt('page', 1)/*page number*/,
-            20/*limit per page*/
-        );
         return $this->render('model_template/index.html.twig', [
-            'model_templates' => $modelTemplates,
+            'model_templates' => $modelTemplateRepository->findBy([],['block'=>'ASC']),
         ]);
     }
 
@@ -50,50 +38,31 @@ class ModelTemplateController extends AbstractController
      * @param ModelTemplateRepository $modelTemplateRepository
      * @param TypeBlockRepository $typeBlockRepository
      * @param Request $request
-     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function indexBlock(ModelTemplateRepository $modelTemplateRepository, TypeBlockRepository $typeBlockRepository,Request $request, PaginatorInterface $paginator): Response
+    public function indexBlock(ModelTemplateRepository $modelTemplateRepository, TypeBlockRepository $typeBlockRepository,Request $request): Response
     {
         $block = $request->get('block');
-        $modelTemplate = $modelTemplateRepository->findModelTemplatesByBlock($block);
-
-        $modelTemplates = $paginator->paginate(
-            $modelTemplate, /* query NOT result */
-            $request->query->getInt('page', 1)/*page number*/,
-            20/*limit per page*/
-        );
+        $type = $typeBlockRepository->findBy(['identifier'=>$block]);
 
         return $this->render('model_template/index.html.twig', [
-            'model_templates' => $modelTemplates,
+            'model_templates' => $modelTemplateRepository->findBy(['block'=>$type],['block'=>'ASC']),
         ]);
     }
 
     /**
      * @Route("/new", name="model_template_new", methods={"GET","POST"})
      * @param Request $request
-     * @param UploaderHelper $uploaderHelper
      * @return Response
-     * @throws Exception
      * @IsGranted("ROLE_ADMIN")
      */
-    public function new(Request $request, UploaderHelper $uploaderHelper): Response
+    public function new(Request $request): Response
     {
         $modelTemplate = new ModelTemplate();
         $form = $this->createForm(ModelTemplateType::class, $modelTemplate);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var ModelTemplate $modelTemplate */
-            $modelTemplate = $form->getData();
-
-            /** @var UploadedFile $uploadedFile */
-            $uploadedFile = $form['imageFile']->getData();
-
-            if ($uploadedFile) {
-                $newFilename = $uploaderHelper->uploadEntradaImage($uploadedFile, false);
-                $modelTemplate->setImageFilename($newFilename);
-            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($modelTemplate);
             $entityManager->flush();
@@ -108,7 +77,7 @@ class ModelTemplateController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/show", name="model_template_show", methods={"GET"})
+     * @Route("/{id}", name="model_template_show", methods={"GET"})
      * @param ModelTemplate $modelTemplate
      * @return Response
      */
@@ -123,23 +92,15 @@ class ModelTemplateController extends AbstractController
      * @Route("/{id}/edit", name="model_template_edit", methods={"GET","POST"})
      * @param Request $request
      * @param ModelTemplate $modelTemplate
-     * @param UploaderHelper $uploaderHelper
      * @return Response
-     * @throws Exception
      * @IsGranted("ROLE_ADMIN")
      */
-    public function edit(Request $request, ModelTemplate $modelTemplate, UploaderHelper $uploaderHelper): Response
+    public function edit(Request $request, ModelTemplate $modelTemplate): Response
     {
         $form = $this->createForm(ModelTemplateType::class, $modelTemplate);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $uploadedFile */
-            $uploadedFile = $form['imageFile']->getData();
-            if ($uploadedFile) {
-                $newFilename = $uploaderHelper->uploadEntradaImage($uploadedFile, $modelTemplate->getImageFilename());
-                $modelTemplate->setImageFilename($newFilename);
-            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('model_template_index');

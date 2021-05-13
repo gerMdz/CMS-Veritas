@@ -24,7 +24,7 @@ class ModelTemplateRepository extends ServiceEntityRepository
      * @return QueryBuilder Returns an array of ModelTemplate objects
      */
 
-    public function findByTypeSection(): QueryBuilder
+    public function findByTypeSection()
     {
         return $this->createQueryBuilder('m')
             ->leftJoin('m.block', 'b')
@@ -41,7 +41,7 @@ class ModelTemplateRepository extends ServiceEntityRepository
      * @return QueryBuilder Returns an array of ModelTemplate objects
      */
 
-    public function findByTypeEntrada(): QueryBuilder
+    public function findByTypeEntrada()
     {
         return $this->createQueryBuilder('m')
             ->leftJoin('m.block', 'b')
@@ -54,21 +54,6 @@ class ModelTemplateRepository extends ServiceEntityRepository
             ;
     }
 
-    public function findAllModelTemplates(): QueryBuilder
-    {
-        return $this->createQueryBuilder('m')
-            ->orderBy('m.block', 'ASC')
-            ->addOrderBy('m.description', 'ASC');
-    }
-
-    public function findModelTemplatesByBlock($block): QueryBuilder
-    {
-        return $this->createQueryBuilder('m')
-            ->leftJoin('m.block', 'b')
-            ->andWhere('b.identifier = :val')
-            ->setParameter('val', $block )
-            ->addOrderBy('m.description', 'ASC');
-    }
 
     /*
     public function findOneBySomeField($value): ?ModelTemplate

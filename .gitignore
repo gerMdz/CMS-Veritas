@@ -51,6 +51,7 @@ yarn-error.log
 
 /public/vendors/tilt/
 /public/css/stream-ui-kit/assets/vendors/
+/public/fonts/awasome/
 /public/fonts/druk/
 /public/fonts/univers/
 /public/css/stream-ui-kit/assets/img/
@@ -108,6 +109,3 @@ yarn-error.log
 /public/images/institucional/qr-dom-10hs.jpg
 /public/images/institucional/qr-dom-21hs.jpg
 /public/images/institucional/qr-sab-21hs.jpg
-/public/images/base.jpg
-/public/images/logo-mail.png
-/public/images/logo.png

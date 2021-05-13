@@ -1,54 +1,34 @@
-{% extends 'base_admin_board.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}Vista Model Template{% endblock %}
+{% block title %}ModelTemplate{% endblock %}
 
-{% block content %}
-    <h2>ModelTemplate <i>"{{ model_template.name }}"</i></h2>
+{% block body %}
+    <h1>ModelTemplate</h1>
 
-    <div class="row">
-        <div class="col-sm-7">
-            <table class="table">
-                <tbody>
-                <tr>
-                    <th>Id</th>
-                    <td>{{ model_template.id }}</td>
-                </tr>
-                <tr>
-                    <th>Name</th>
-                    <td>{{ model_template.name }}</td>
-                </tr>
-                <tr>
-                    <th>Description</th>
-                    <td>{{ model_template.description }}</td>
-                </tr>
-                <tr>
-                    <th>Identifier</th>
-                    <td>{{ model_template.identifier }}</td>
-                </tr>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ model_template.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ model_template.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ model_template.description }}</td>
+            </tr>
+            <tr>
+                <th>Identifier</th>
+                <td>{{ model_template.identifier }}</td>
+            </tr>
+        </tbody>
+    </table>
 
-                </tbody>
-            </table>
-        </div>
-        <div class="col-sm-5">
-            <h3>Imagen</h3>
-            <img class="show-article-img img-fluid"
-                 src="{{ model_template.imagePath|imagine_filter('squared_thumbnail_section') }}"
-                 alt="Sin Imagen">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <a href="{{ path('model_template_index') }}">
-                {{ include('bases/_volver.html.twig') }}
-            </a>
-        </div>
-        <div class="col-sm-4">
-            <a href="{{ path('model_template_edit', {'id': model_template.id}) }}">
-                {{ include('bases/_editar.html.twig') }}
-            </a>
-        </div>
-        <div class="col-sm-4">
-            {{ include('model_template/_delete_form.html.twig') }}
-        </div>
-    </div>
+    <a href="{{ path('model_template_index') }}">back to list</a>
+
+    <a href="{{ path('model_template_edit', {'id': model_template.id}) }}">edit</a>
+
+    {{ include('model_template/_delete_form.html.twig') }}
 {% endblock %}

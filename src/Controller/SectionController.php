@@ -3,13 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Entrada;
-use App\Entity\ModelTemplate;
 use App\Entity\Principal;
 use App\Entity\Section;
 use App\Form\SectionFormType;
-use App\Form\Step\Section\StepOneType;
-use App\Form\Step\Section\StepThreeType;
-use App\Form\Step\Section\StepTwoType;
 use App\Repository\EntradaRepository;
 use App\Repository\SectionRepository;
 use App\Service\UploaderHelper;
@@ -208,92 +204,5 @@ class SectionController extends BaseController
         ]);
     }
 
-    /**
-     * @Route("/new/step1", name="admin_section_new_step1", methods={"GET","POST"})
-     * @param Request $request
-     * @return Response
-     * @throws Exception
-     * @IsGranted("ROLE_ADMIN")
-     */
-    public function newStepOne(Request $request): Response
-    {
-        $section = new Section();
-        $form = $this->createForm(StepOneType::class, $section);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $principal = $form['principal']->getData();
-            $section->addPrincipale($principal);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($section);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('admin_section_new_step2', [
-                'id' => $section->getId()
-            ]);
-        }
-
-        return $this->render('section_admin/new_step1.html.twig', [
-            'section' => $section,
-            'sectionForm' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/new/step2/{id}", name="admin_section_new_step2", methods={"GET","POST"})
-     * @param Request $request
-     * @param Section $section
-     * @return Response
-     * @IsGranted("ROLE_ADMIN")
-     */
-    public function newStepTwo(Request $request, Section $section): Response
-    {
-        $section->setTitle($section->getName());
-        $form = $this->createForm(StepTwoType::class, $section);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('admin_section_new_step3', [
-                'id' => $section->getId()
-            ]);
-        }
-
-        return $this->render('section_admin/new_step2.html.twig', [
-            'section' => $section,
-            'sectionForm' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/new/step3/{id}", name="admin_section_new_step3", methods={"GET","POST"})
-     * @param Request $request
-     * @param Section $section
-     * @return Response
-     * @IsGranted("ROLE_ADMIN")
-     */
-    public function newStepThree(Request $request, Section $section): Response
-    {
-        $section->setTitle($section->getName());
-        $form = $this->createForm(StepThreeType::class, $section);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('admin_section_show', [
-                'id' => $section->getId()
-            ]);
-        }
-
-        return $this->render('section_admin/new_step3.html.twig', [
-            'section' => $section,
-            'sectionForm' => $form->createView(),
-        ]);
-    }
 
 }
