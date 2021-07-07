@@ -34,13 +34,17 @@
                                 <td>{{ contacto.textoPagina }}</td>
                                 <td>{{ contacto.nombre }}</td>
                                 <td>
-                                    <a href="{{ path('contacto_show', {'id': contacto.id}) }}">show</a>
-                                    <a href="{{ path('contacto_edit', {'id': contacto.id}) }}">edit</a>
+                                    <a href="{{ path('contacto_show', {'id': contacto.id}) }}">
+                                    {% include 'bases/_ver.html.twig' %}
+                                    </a>
+                                    <a href="{{ path('contacto_edit', {'id': contacto.id}) }}">
+                                        {% include 'bases/_editar.html.twig' %}
+                                    </a>
                                 </td>
                             </tr>
                         {% else %}
                             <tr>
-                                <td colspan="6">no records found</td>
+                                <td colspan="6">No se encontraron Contactos</td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -52,6 +56,5 @@
             </div>
         </div>
     </div>
-
 
 {% endblock %}
