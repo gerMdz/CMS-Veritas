@@ -6,6 +6,7 @@ use App\Entity\Invitado;
 use App\Form\InvitadoType;
 use App\Repository\CelebracionRepository;
 use App\Repository\InvitadoRepository;
+use App\Service\ObtenerDatosHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -160,5 +161,19 @@ class InvitadoController extends AbstractController
         $em->flush();
         return new JsonResponse(['presente' => $invitado->getIsPresente()]);
 
+    }
+
+    /**
+     * @Route("/faltan-datos/celebracion", name="invitados_faltan_datos", methods={"GET", "POST"})
+     * @param CelebracionRepository $celebracionRepository
+     * @param InvitadoRepository $invitadoRepository
+     * @return JsonResponse
+     */
+    public function faltanDatosInvitados(CelebracionRepository $celebracionRepository, InvitadoRepository $invitadoRepository): JsonResponse
+    {
+        $celebraciones = $celebracionRepository->puedeMostrarse()->getQuery()->getResult();
+        $invitados = $invitadoRepository->faltanDatosInvitados($celebraciones)->getQuery()->getArrayResult();
+
+        return new JsonResponse($invitados);
     }
 }

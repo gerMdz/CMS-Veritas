@@ -68,4 +68,15 @@ class ObtenerDatosHelper
 
         return $client_ip[0];
     }
+
+    public function getIds($data): array
+    {
+        return array_values(
+            array_map(
+                function ($d) {
+                    return $d->getId();
+                }, $data
+            )
+        );
+    }
 }

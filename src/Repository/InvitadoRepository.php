@@ -93,6 +93,24 @@ class InvitadoRepository extends ServiceEntityRepository
         return $qb;
     }
 
+
+    /**
+     * @param array $celebraciones
+     * @return QueryBuilder
+     */
+    public function faltanDatosInvitados(array $celebraciones): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('i');
+        $qb->andWhere(
+            $qb->expr()->in('i.celebracion', ':celebraciones')
+        )->setParameter(':celebraciones', $celebraciones);
+
+        $qb->andWhere(
+            'i.email is Null and i.dni is Null and i.nombre is Null and i.apellido is Null'
+        );
+        return $qb;
+    }
+
     /**
      * @param string|null $celebracion
      * @param string|null $qSearch
@@ -110,7 +128,7 @@ class InvitadoRepository extends ServiceEntityRepository
     public function byCelebracionForExport($celebracion)
     {
         $qb = $this->searchBuilder($celebracion, null)
-        ->select('i.id as id, i.isPresente as presente,CONCAT(i.nombre, \'  \' , i.apellido) as invits, i.telefono as WhatsApp, i.dni as documento, i.email as email, i.updatedAt as reserva, i.isEnlace as reservante, CONCAT(invitante.nombre,\' \', invitante.apellido) as invito ');
+            ->select('i.id as id, i.isPresente as presente,CONCAT(i.nombre, \'  \' , i.apellido) as invits, i.telefono as WhatsApp, i.dni as documento, i.email as email, i.updatedAt as reserva, i.isEnlace as reservante, CONCAT(invitante.nombre,\' \', invitante.apellido) as invito ');
         $qb->leftJoin('i.enlace', 'invitante');
         $qb->addOrderBy('invitante.apellido', 'ASC');
         $qb->addOrderBy('i.isEnlace', 'DESC');
@@ -122,7 +140,7 @@ class InvitadoRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('i')
             ->select('i')
-        ->andWhere('i.celebracion = :celebracion')
+            ->andWhere('i.celebracion = :celebracion')
             ->setParameter(':celebracion', $celebracion);
 
     }
@@ -185,13 +203,13 @@ class InvitadoRepository extends ServiceEntityRepository
     public function findOneByCelebracionEmail($celebracion, $email)
     {
 
-            return $this->createQueryBuilder('i')
-                ->andWhere('i.celebracion = :cel')
-                ->andWhere('i.email = :email')
-                ->setParameter('cel', $celebracion)
-                ->setParameter('email', $email)
-                ->getQuery()
-                ->getResult();
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.celebracion = :cel')
+            ->andWhere('i.email = :email')
+            ->setParameter('cel', $celebracion)
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getResult();
 
     }
 

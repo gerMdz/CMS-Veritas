@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Reservante;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -36,6 +38,25 @@ class ReservanteRepository extends ServiceEntityRepository
     }
     */
 
+    /**
+     * @param array $celebraciones
+     * @return array|null
+     */
+    public function faltanDatosInvitadosFromReservante(array $celebraciones): ?array
+    {
+        $qb = $this->createQueryBuilder('r');
+        $qb->select('r');
+        $qb->leftJoin('r.invitados', 'i');
+        $qb->andWhere(
+            $qb->expr()->in('r.celebracion', ':celebraciones')
+        )->setParameter(':celebraciones', $celebraciones);
+
+        $qb->andWhere(
+            'i.email is Null and i.dni is Null and i.nombre is Null and i.apellido is Null'
+        );
+        $qb->addGroupBy('r');
+        return $qb->getQuery()->getArrayResult();
+    }
 
     public function findOneByReserva($celebracion, $email): ?Reservante
     {

@@ -5,9 +5,12 @@ namespace App\Controller;
 use App\Entity\Reservante;
 use App\Form\Filter\ReservaByEmailFilterType;
 use App\Form\ReservanteType;
+use App\Repository\CelebracionRepository;
+use App\Repository\InvitadoRepository;
 use App\Repository\ReservanteRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -139,5 +142,19 @@ class ReservanteController extends AbstractController
         }
 
         return $this->redirectToRoute('reservante_index');
+    }
+
+    /**
+     * @Route("/faltan-datos/invitados", name="reservante_faltan_datos", methods={"GET", "POST"})
+     * @param CelebracionRepository $celebracionRepository
+     * @param ReservanteRepository $reservanteRepository
+     * @return JsonResponse
+     */
+    public function faltanDatosInvitadosFromReservante(CelebracionRepository $celebracionRepository, ReservanteRepository $reservanteRepository): JsonResponse
+    {
+        $celebraciones = $celebracionRepository->puedeMostrarse()->getQuery()->getResult();
+        $reservantes = $reservanteRepository->faltanDatosInvitadosFromReservante($celebraciones);
+
+        return new JsonResponse($reservantes);
     }
 }
